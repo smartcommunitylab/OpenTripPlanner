@@ -258,6 +258,15 @@ public class StreetEdge extends Edge implements Cloneable {
             if (this.isReverseOf(backEdge) || backEdge.isReverseOf(this)) {
                 return null;
             }
+            
+//            if (traverseMode.isDriving() && backEdge instanceof StreetTransitLink) {
+//            	return null;
+//            }
+            
+//            System.out.println("backEdge[from] - " + backEdge.getFromVertex() + "backEdge[to]" + backEdge.getToVertex());
+//            System.out.println("thisEdge[from] - " + this.getFromVertex() + "thisEdge[to]" + this.getToVertex());
+//            System.out.println("backEdge- [" +  backEdge + "]");
+//            System.out.println("this- [" +  this + "]");
         }
 
         // Ensure we are actually walking, when walking a bike

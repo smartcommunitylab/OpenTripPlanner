@@ -3,8 +3,10 @@ package org.opentripplanner.routing.spt;
 import org.opentripplanner.routing.core.RoutingRequest;
 import org.opentripplanner.routing.core.State;
 import org.opentripplanner.routing.edgetype.StreetEdge;
+import org.opentripplanner.routing.graph.Edge;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A class that determines when one search branch prunes another at the same Vertex, and ultimately which solutions
@@ -38,9 +40,21 @@ public abstract class DominanceFunction implements Serializable {
      */
     public boolean betterOrEqualAndComparable(State a, State b) {
 
+        // States before boarding transit and after riding transit are incomparable.
+        // This allows returning transit options even when walking to the destination is the optimal strategy.
+        if (a.isEverBoarded() != b.isEverBoarded()) {
+            return false;
+        }
+
         // Does one state represent riding a rented bike and the other represent walking before/after rental?
         if (a.isBikeRenting() != b.isBikeRenting()) {
             return false;
+        }
+
+        // In case of bike renting, different networks (ie incompatible bikes) are not comparable
+        if (a.isBikeRenting()) {
+            if (!Objects.equals(a.getBikeRentalNetworks(), b.getBikeRentalNetworks()))
+                return false;
         }
 
         // Does one state represent driving a car and the other represent walking after the car was parked?
@@ -53,11 +67,9 @@ public abstract class DominanceFunction implements Serializable {
             return false;
         }
 
-        // Are the two states arriving at a vertex from two different directions where turn restrictions apply?
+        // Are the two states arriving at a vertex from two different directions?
         if (a.backEdge != b.getBackEdge() && (a.backEdge instanceof StreetEdge)) {
-            if (! a.getOptions().getRoutingContext().graph.getTurnRestrictions(a.backEdge).isEmpty()) {
-                return false;
-            }
+            return false;
         }
         
         // These two states are comparable (they are on the same "plane" or "copy" of the graph).
@@ -87,6 +99,21 @@ public abstract class DominanceFunction implements Serializable {
         /** Return true if the first state has lower elapsed time than the second state. */
         @Override
         public boolean betterOrEqual (State a, State b) { return a.getElapsedTimeSeconds() <= b.getElapsedTimeSeconds(); }
+    }
+    
+    /**
+     * A dominance function that prefers the least walking. This should only be used with walk-only searches because
+     * it does not include any functions of time, and once transit is boarded walk distance is constant.
+     * 
+     * It is used when building stop tree caches for egress from transit stops.
+     */
+    public static class LeastWalk extends DominanceFunction {
+
+        @Override
+        protected boolean betterOrEqual(State a, State b) {
+            return a.getWalkDistance() <= b.getWalkDistance(); 
+        }
+
     }
 
     /** In this implementation the relation is not symmetric. There are sets of mutually co-dominant states. */

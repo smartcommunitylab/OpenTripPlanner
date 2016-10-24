@@ -98,8 +98,8 @@ public class DefaultWayPropertySetSource implements WayPropertySetSource {
         setProperties(props, "highway=service", StreetTraversalPermission.ALL, 1.1, 1.1);
         setProperties(props, "highway=residential", StreetTraversalPermission.ALL, 0.98, 0.98);
         setProperties(props, "highway=residential_link", StreetTraversalPermission.ALL, 0.98, 0.98);
-        setProperties(props, "highway=tertiary", StreetTraversalPermission.ALL, 1, 1);
-        setProperties(props, "highway=tertiary_link", StreetTraversalPermission.ALL, 1, 1);
+        setProperties(props, "highway=tertiary", StreetTraversalPermission.ALL, 1, 1); // 1,1
+        setProperties(props, "highway=tertiary_link", StreetTraversalPermission.ALL, 1, 1); // 1,1
         setProperties(props, "highway=secondary", StreetTraversalPermission.ALL, 1.5, 1.5);
         setProperties(props, "highway=secondary_link", StreetTraversalPermission.ALL, 1.5, 1.5);
         setProperties(props, "highway=primary", StreetTraversalPermission.ALL, 2.06, 2.06);
@@ -369,37 +369,29 @@ public class DefaultWayPropertySetSource implements WayPropertySetSource {
         setProperties(props, "highway=motorway_link;bicycle=designated",
                 StreetTraversalPermission.BICYCLE_AND_CAR, 2, 2);
 
-        /*
-         * Automobile speeds in the United States: Based on my (mattwigway) personal experience, primarily in California
-         */
-        setCarSpeed(props, "highway=motorway", 29); // 29 m/s ~= 65 mph
-        setCarSpeed(props, "highway=motorway_link", 15); // ~= 35 mph
-        setCarSpeed(props, "highway=trunk", 24.6f); // ~= 55 mph
-        setCarSpeed(props, "highway=trunk_link", 15); // ~= 35 mph
-        setCarSpeed(props, "highway=primary", 20); // ~= 45 mph
-        setCarSpeed(props, "highway=primary_link", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=secondary", 15); // ~= 35 mph
-        setCarSpeed(props, "highway=secondary_link", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=tertiary", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=tertiary_link", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=living_street", 2.2f); // ~= 5 mph
-
-        // generally, these will not allow cars at all, but the docs say
-        // "For roads used mainly/exclusively for pedestrians . . . which may allow access by
-        // motorised vehicles only for very limited periods of the day."
-        // http://wiki.openstreetmap.org/wiki/Key:highway
-        // This of course makes the street network time-dependent
-        setCarSpeed(props, "highway=pedestrian", 2.2f); // ~= 5 mph
-
-        setCarSpeed(props, "highway=residential", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=unclassified", 11.2f); // ~= 25 mph
-        setCarSpeed(props, "highway=service", 6.7f); // ~= 15 mph
-        setCarSpeed(props, "highway=track", 4.5f); // ~= 10 mph
-        setCarSpeed(props, "highway=road", 11.2f); // ~= 25 mph
-
+        /* Automobile speeds in the Italy(meter/sec) */
+        setCarSpeed(props, "highway=motorway", 30.56f); // 110km/hr (autostrada)
+        setCarSpeed(props, "highway=motorway_link", 30.56f);
+        
+        setCarSpeed(props, "highway=trunk", 19.45f); // 70km/h
+        setCarSpeed(props, "highway=trunk_link", 19.45f);
+        
+        setCarSpeed(props, "highway=primary", 19.45f); // 70km/h
+        setCarSpeed(props, "highway=primary_link", 19.45f);
+        
+        setCarSpeed(props, "highway=secondary", 16.67f); // 60km/h
+        setCarSpeed(props, "highway=secondary_link", 16.67f);
+        
+        setCarSpeed(props, "highway=tertiary", 8.34f); // 30km/h
+        setCarSpeed(props, "highway=tertiary_link", 8.34f);
+        
+        setCarSpeed(props, "highway=service", 1.4f); // 5km/h
+        setCarSpeed(props, "highway=residential", 2.78f); // 10km/h
+        setCarSpeed(props, "highway=unclassified", 1.4f); // 5km/h
+        
         // default ~= 25 mph
-        props.defaultSpeed = 11.2f;
-
+        props.defaultSpeed = 2.8f; // 10km/hr
+        
         /*** special situations ****/
 
         /*
@@ -478,6 +470,10 @@ public class DefaultWayPropertySetSource implements WayPropertySetSource {
                 1.45, true);
 
         props.defaultProperties.setPermission(StreetTraversalPermission.ALL);
+        
+        /* SUPER FIX (access=destination) */
+		setProperties(props, "highway=*;access=destination",
+				StreetTraversalPermission.PEDESTRIAN_AND_BICYCLE, 0.87, 0.87);
 
         /* and the notes */
         // TODO: The curly brackets in the string below mean that the CreativeNamer should substitute in OSM tag values.

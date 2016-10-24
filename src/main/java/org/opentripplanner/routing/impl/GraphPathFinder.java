@@ -299,14 +299,14 @@ public class GraphPathFinder {
         List<GraphPath> paths = null;
         try {
             paths = getGraphPathsConsideringIntermediates(request);
-            if (paths == null && request.wheelchairAccessible) {
-                // There are no paths that meet the user's slope restrictions.
-                // Try again without slope restrictions, and warn the user in the response.
-                RoutingRequest relaxedRequest = request.clone();
-                relaxedRequest.maxSlope = Double.MAX_VALUE;
-                request.rctx.slopeRestrictionRemoved = true;
-                paths = getGraphPathsConsideringIntermediates(relaxedRequest);
-            }
+			if (paths == null && request.wheelchairAccessible) {
+				// There are no paths that meet the user's slope restrictions.
+				// Try again without slope restrictions, and warn the user in the response.
+				RoutingRequest relaxedRequest = request.clone();
+				relaxedRequest.maxSlope = Double.MAX_VALUE;
+				request.rctx.slopeRestrictionRemoved = true;
+				paths = getGraphPathsConsideringIntermediates(relaxedRequest);
+			}
             request.rctx.debugOutput.finishedCalculating();
         } catch (VertexNotFoundException e) {
             LOG.info("Vertex not found: " + request.from + " : " + request.to);

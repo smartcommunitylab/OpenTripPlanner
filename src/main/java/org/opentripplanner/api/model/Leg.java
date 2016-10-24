@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
 import org.opentripplanner.routing.alertpatch.Alert;
+import org.opentripplanner.routing.core.Fare;
 import org.opentripplanner.routing.core.TraverseMode;
 import org.opentripplanner.util.model.EncodedPolylineBean;
 
@@ -204,6 +205,11 @@ public class Leg {
      * The Place where the leg begins.
      */
     public Place to = null;
+    
+    /**
+     * The cost of this leg
+     */
+    public Fare fare = new Fare();
 
     /**
      * For transit legs, intermediate stops between the Place where the leg originates and the Place where the leg ends.

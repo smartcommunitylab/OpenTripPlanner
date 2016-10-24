@@ -76,13 +76,29 @@ public class RepeatingTimePeriod implements Serializable {
         boolean active = false;
         RepeatingTimePeriod ret = new RepeatingTimePeriod();
         
+        String[] daysOn = day_on.split(";");
+        String[] daysOff = day_off.split(";");
         // loop through twice to handle cases like Saturday - Tuesday
         for (String today : new String[] {"monday", "tuesday", "wednesday", "thursday", "friday",
                 "saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday",
                 "saturday", "sunday"}) {
             
-            if (today.startsWith(day_on.toLowerCase()))
-                active = true;
+//            if (today.startsWith(day_on.toLowerCase()))
+//                active = true;
+            
+			for (String dayActive : daysOn) {
+				if (today.equalsIgnoreCase(dayActive)) {
+					active = true;
+					break;
+				}
+			}
+
+			for (String dayInActive : daysOff) {
+				if (today.equalsIgnoreCase(dayInActive)) {
+					active = false;
+					break;
+				}
+			}
             
             if (active) {
                 if (today == "monday")
@@ -107,8 +123,8 @@ public class RepeatingTimePeriod implements Serializable {
                     ret.sunday = onOff;
             }
                 
-            if (today.startsWith(day_off.toLowerCase()))
-                active = false;
+//            if (today.startsWith(day_off.toLowerCase()))
+//                active = false;
         }
         
         return ret;
@@ -137,10 +153,10 @@ public class RepeatingTimePeriod implements Serializable {
         Calendar cal;
         // TODO offsets
         if (this.timeZone != null)
-            cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+            cal = Calendar.getInstance(TimeZone.getDefault());
         else
             // FIXME hardwired time zone
-            cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+            cal = Calendar.getInstance(TimeZone.getDefault());
         
         cal.setTimeInMillis(time * 1000);
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
