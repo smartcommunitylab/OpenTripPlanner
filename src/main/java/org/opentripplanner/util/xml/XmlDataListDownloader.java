@@ -134,7 +134,7 @@ public class XmlDataListDownloader<T> {
                     child = child.getNextSibling();
                     continue;
                 }
-                attributes.put(child.getNodeName(), child.getTextContent());
+                attributes.put(child.getNodeName(), child.getNodeValue());
                 child = child.getNextSibling();
             }
             T t = dataFactory.build(attributes);

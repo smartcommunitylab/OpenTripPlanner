@@ -184,7 +184,7 @@ public class NEDDownloader implements NEDTileSource {
                 }
                 for (int i = 0; i < nodes.getLength(); ++i) {
                     Node node = nodes.item(i);
-                    String urlString = node.getTextContent().trim();
+                    String urlString = node.getNodeValue().trim();
                     log.info("Getting URL {}/{}", ++nd, payloads.size());
                     log.debug("Adding NED URL: " + urlString);
                     // use one specific, less-broken server at usgs

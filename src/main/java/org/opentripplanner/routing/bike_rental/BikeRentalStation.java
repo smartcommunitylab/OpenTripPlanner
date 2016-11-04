@@ -41,6 +41,9 @@ public class BikeRentalStation implements Serializable {
     @XmlAttribute
     @JsonSerialize
     public boolean allowDropoff = true;
+    @XmlAttribute
+    @JsonSerialize
+    public String address;
 
     /**
      * List of compatible network names. Null (default) to be compatible with all.
