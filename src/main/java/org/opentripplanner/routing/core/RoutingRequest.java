@@ -130,8 +130,8 @@ public class RoutingRequest implements Cloneable, Serializable {
     /** The maximum number of itineraries to return. */
     public int numItineraries = 3;
 
-    /** The maximum slope of streets for wheelchair trips. */
-    public double maxSlope = 0.0833333333333; // ADA max wheelchair ramp slope is a good default.
+    /** smart-planner. **/
+    public double maxSlope = 0.15; 
 
     /** Whether the planner should return intermediate stops lists for transit legs. */
     public boolean showIntermediateStops = false;

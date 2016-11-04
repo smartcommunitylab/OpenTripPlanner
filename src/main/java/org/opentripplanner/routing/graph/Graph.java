@@ -916,7 +916,7 @@ public class Graph implements Serializable {
                 agencies = agenciesForFeedId.entrySet().iterator().next().getValue();
             }
             if (agencies == null || agencies.size() == 0) {
-                timeZone = TimeZone.getTimeZone("GMT");
+                timeZone = TimeZone.getDefault();
                 LOG.warn("graph contains no agencies (yet); API request times will be interpreted as GMT.");
             } else {
                 CalendarService cs = this.getCalendarService();

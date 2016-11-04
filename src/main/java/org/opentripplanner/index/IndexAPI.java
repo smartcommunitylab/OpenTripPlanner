@@ -186,9 +186,9 @@ public class IndexAPI {
            if (lat == null || lon == null || radius == null || radius < 0) {
                return Response.status(Status.BAD_REQUEST).entity(MSG_400).build();
            }
-           if (radius > MAX_STOP_SEARCH_RADIUS){
-               radius = MAX_STOP_SEARCH_RADIUS;
-           }
+//           if (radius > MAX_STOP_SEARCH_RADIUS){
+//               radius = MAX_STOP_SEARCH_RADIUS;
+//           }
            List<StopShort> stops = Lists.newArrayList(); 
            Coordinate coord = new Coordinate(lon, lat);
            for (TransitStop stopVertex : streetIndex.getNearbyTransitStops(
@@ -447,10 +447,9 @@ public class IndexAPI {
        Trip trip = index.tripForId.get(tripId);
        if (trip != null) {
            TripPattern pattern = index.patternForTrip.get(trip);
-           // Note, we need the updated timetable not the scheduled one (which contains no real-time updates).
-           Timetable table = index.currentUpdatedTimetableForTripPattern(pattern);
+           Timetable table = pattern.scheduledTimetable;
            return Response.status(Status.OK).entity(TripTimeShort.fromTripTimes(table, trip)).build();
-       } else {
+       } else { 
            return Response.status(Status.NOT_FOUND).entity(MSG_404).build();
        }
    }

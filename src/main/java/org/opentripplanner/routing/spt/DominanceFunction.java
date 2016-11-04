@@ -3,6 +3,7 @@ package org.opentripplanner.routing.spt;
 import org.opentripplanner.routing.core.RoutingRequest;
 import org.opentripplanner.routing.core.State;
 import org.opentripplanner.routing.edgetype.StreetEdge;
+import org.opentripplanner.routing.graph.Edge;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -66,11 +67,9 @@ public abstract class DominanceFunction implements Serializable {
             return false;
         }
 
-        // Are the two states arriving at a vertex from two different directions where turn restrictions apply?
+        // Are the two states arriving at a vertex from two different directions?
         if (a.backEdge != b.getBackEdge() && (a.backEdge instanceof StreetEdge)) {
-            if (! a.getOptions().getRoutingContext().graph.getTurnRestrictions(a.backEdge).isEmpty()) {
-                return false;
-            }
+            return false;
         }
         
         // These two states are comparable (they are on the same "plane" or "copy" of the graph).
@@ -116,7 +115,7 @@ public abstract class DominanceFunction implements Serializable {
         }
 
     }
-
+    
     /** In this implementation the relation is not symmetric. There are sets of mutually co-dominant states. */
     public static class Pareto extends DominanceFunction {
 

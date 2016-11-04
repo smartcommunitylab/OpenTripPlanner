@@ -411,7 +411,9 @@ public class GraphIndex {
         if (graph.timetableSnapshotSource != null) {
             snapshot = graph.timetableSnapshotSource.getTimetableSnapshot();
         }
-        ServiceDate[] serviceDates = {new ServiceDate().previous(), new ServiceDate(), new ServiceDate().next()};
+         
+        ServiceDate requestedDate = new ServiceDate(new java.util.Date(startTime * 1000));
+        ServiceDate[] serviceDates = {requestedDate.previous(), requestedDate, requestedDate.next()};
 
         for (TripPattern pattern : patternsForStop.get(stop)) {
 
