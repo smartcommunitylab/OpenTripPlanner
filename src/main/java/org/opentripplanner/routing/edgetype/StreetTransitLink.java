@@ -13,6 +13,8 @@
 
 package org.opentripplanner.routing.edgetype;
 
+import java.util.Locale;
+
 import org.onebusaway.gtfs.model.Trip;
 import org.opentripplanner.common.geometry.GeometryUtils;
 import org.opentripplanner.routing.core.State;
@@ -142,6 +144,11 @@ public class StreetTransitLink extends Edge {
     public String toString() {
         return "StreetTransitLink(" + fromv + " -> " + tov + ")";
     }
+
+	@Override
+	public String getName(Locale locale) {
+		return "street transit link";
+	}
 
 
 }
