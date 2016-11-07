@@ -141,7 +141,7 @@ public class OpenStreetMapModule implements GraphBuilderModule {
     /**
      * Whether we should create bike P+R stations from OSM data.
      */
-    public boolean staticBikeParkAndRide = false;
+    public boolean staticBikeParkAndRide = true;
 
     public List<String> provides() {
         return Arrays.asList("streets", "turns");
