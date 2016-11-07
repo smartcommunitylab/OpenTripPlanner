@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.opentripplanner.util.I18NString;
+import org.opentripplanner.util.NonLocalizedString;
 import org.opentripplanner.util.ResourceBundleSingleton;
 
 public class BikeRentalStation implements Serializable, Cloneable {
@@ -78,6 +79,10 @@ public class BikeRentalStation implements Serializable, Cloneable {
     @JsonIgnore
     @XmlTransient
     public Locale locale = ResourceBundleSingleton.INSTANCE.getLocale(null);
+    
+    @XmlTransient
+    @JsonIgnore
+	public NonLocalizedString address;
 
     public boolean equals(Object o) {
         if (!(o instanceof BikeRentalStation)) {
